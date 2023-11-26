@@ -1,34 +1,389 @@
+# -*- coding: utf-8 -*-
 
-import numpy as np
+###########################################################################
+## Python code generated with wxFormBuilder (version 3.10.1-368-g19bcc292)
+## http://www.wxformbuilder.org/
+##
+## PLEASE DO *NOT* EDIT THIS FILE!
+###########################################################################
+from numpy import arange, sin, pi
+import matplotlib
+import csv
+import os
+import pandas as pd
+matplotlib.use('WXAgg')
+
 from datetime import datetime as dt
-from matplotlib import pyplot as plt, dates as mdates
+from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
+from matplotlib import pyplot as plt
+#from matplotlib.backends.backend_wx import NavigationToolbar2Wx
+from matplotlib.figure import Figure
+from scipy.stats import spearmanr
+from scipy.stats import pearsonr
+import wx
+import wx.xrc
 
-# X axis parameter:
-xaxis = np.array([2, 8])
+figuresize=(7.5,3.9)
 
-# Y axis parameter:
-yaxis = np.array([4, 9])
+class Inicial ( wx.Frame ):
+	
+	def __init__( self, parent ):
+		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = wx.EmptyString, pos = wx.DefaultPosition, size = wx.Size( 1239,619 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
+		self.plotData1 = []
+		self.plotData2 = []
+		self.plot1Name =""
+		self.plot2Name =""
+		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
-plt.plot(xaxis, yaxis)
-plt.show()
+		gSizer1 = wx.GridSizer( 0, 2, 0, 0 )
 
-plt.rcParams["figure.figsize"] = [7.50, 3.50]
-plt.rcParams["figure.autolayout"] = True
+		bSizer11 = wx.BoxSizer( wx.VERTICAL )
 
-dates2=["2017-01-01", "2017-02-01", "2017-03-01", "2017-04-01", "2017-05-01", "2017-06-01", "2017-07-01", "2017-08-01", "2017-09-01", "2017-10-01", "2017-11-01", "2017-12-01", "2018-01-01", "2018-02-01", "2018-03-01", "2018-04-01", "2018-05-01", "2018-06-01", "2018-07-01", "2018-08-01", "2018-09-01", "2018-10-01", "2018-11-01", "2018-12-01", "2019-01-01", "2019-02-01", "2019-03-01", "2019-04-01", "2019-05-01", "2019-06-01", "2019-07-01", "2019-08-01", "2019-09-01", "2019-10-01", "2019-11-01", "2019-12-01", "2020-01-01", "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01", "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01", "2021-01-01", "2021-02-01", "2021-03-01", "2021-04-01", "2021-05-01", "2021-06-01", "2021-07-01", "2021-08-01", "2021-09-01", "2021-10-01", "2021-11-01", "2021-12-01", "2022-01-01", "2022-02-01", "2022-03-01", "2022-04-01", "2022-05-01", "2022-06-01", "2022-07-01", "2022-08-01", "2022-09-01", "2022-10-01", "2022-11-01", "2022-12-01", "2023-01-01", "2023-02-01", "2023-03-01", "2023-04-01", "2023-05-01", "2023-06-01"]
-x_values2 = [dt.strptime(d, "%Y-%m-%d").date() for d in dates2]
-y_values2 = [944.28,969.38,1011.4,1005.53,1091.42,1034.91,1085.15,1114.31,1171.74,1275.61,1272.55,1253.05,1361.5,1362.02,1328.9,1244.4,1379,1313.7,1367.47,1401.2,1366.74,1202.3,1239.6,1155.17,1272.09,1350.2,1395.51,1556.18,1296.18,1458.96,1542.44,1504.92,1558.75,1651.22,1716.84,1849.62,1789.93,1705.54,1510.59,1731.24,1852.49,1996.44,2136.41,2260.43,2244.12,2246.15,2663.49,2795.5,2887.08,3067.62,3124.94,3108.99,3186.56,3345.31,3356.53,3417.72,3258.09,3451.27,3833.22,3946.17,3483.21,3429.53,3429,2919.74,3098.69,2556.25,2967.14,2677.39,2306.7,2384.45,2826.85,2532.11,2921.92,2958.39,3230.86,2994.97,3453.18,3673.06]
-x_values2 = [57.400,57.300,57.300,57.600,57.500,57.400,56.600,56.400,56.000,56.000,56.000,56.000,56.100,56.300,56.300,56.400,56.200,56.200,55.900,55.500,55.900,55.600,55.600,55.600,55.100,55.100,55.100,55.200,55.100,55.300,55.400,55.500,55.600,55.500,55.500,55.600,55.500,55.400,55.600,54.900,54.900,54.900,54.700,54.600,54.700,53.800,53.900,54.100,54.100,54.100,54.300,54.200,54.500,54.700,54.548,54.766,54.875,54.947,55.251,55.420,56.336,56.366,56.726,56.488,56.624,56.916,56.804,56.632,56.822,57.313,57.591,57.607,57.231,57.227,57.289,57.027,56.366,56.488]
-#dates = ["01/02/2020", "01/03/2020", "01/04/2020"]
-#x_values = [dt.strptime(d, "%m/%d/%Y").date() for d in dates]
-#y_values = [1, 2, 3]
-ax = plt.gca()
+		bSizer48 = wx.BoxSizer( wx.VERTICAL )
 
-##formatter = mdates.DateFormatter("%Y-%m-%d")
-##ax.xaxis.set_major_formatter(formatter)
-locator = mdates.DayLocator()
-ax.xaxis.set_major_locator(locator)
-#plt.plot(x_values2, y_values2)
-plt.plot(y_values2,color='mediumblue',linewidth=3)
+		bSizer48.SetMinSize( wx.Size( 500,60 ) )
+		gSizer7 = wx.GridSizer( 0, 2, 0, 0 )
 
-plt.show()
+		bSizer51 = wx.BoxSizer( wx.VERTICAL )
+
+		self.m_button24 = wx.Button( self, wx.ID_ANY, u"Listar base", wx.DefaultPosition, wx.Size( 120,50 ), 0 )
+		bSizer51.Add( self.m_button24, 0, wx.ALL, 5 )
+
+		self.m_button22 = wx.Button( self, wx.ID_ANY, u"Limpar", wx.DefaultPosition, wx.Size( 120,50 ), 0 )
+		bSizer51.Add( self.m_button22, 0, wx.ALL, 5 )
+
+		self.m_button27 = wx.Button( self, wx.ID_ANY, u"Testar", wx.DefaultPosition, wx.Size( 120,50 ), 0 )
+		bSizer51.Add( self.m_button27, 0, wx.ALL, 5 )
+
+		self.m_staticText4 = wx.StaticText( self, wx.ID_ANY, u"Selecione a faixa de tempo ", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText4.Wrap( -1 )
+
+		bSizer51.Add( self.m_staticText4, 0, wx.ALL, 5 )
+
+		self.m_staticText5 = wx.StaticText( self, wx.ID_ANY, u"em meses a ser testada", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText5.Wrap( -1 )
+
+		bSizer51.Add( self.m_staticText5, 0, wx.ALL, 5 )
+
+		self.m_staticline5 = wx.StaticLine( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.LI_HORIZONTAL )
+		bSizer51.Add( self.m_staticline5, 0, wx.EXPAND |wx.ALL, 5 )
+
+		gSizer71 = wx.GridSizer( 0, 2, 0, 0 )
+
+		self.m_slider3 = wx.Slider( self, wx.ID_ANY, 5, 5, 100, wx.DefaultPosition, wx.DefaultSize, wx.SL_HORIZONTAL )
+		gSizer71.Add( self.m_slider3, 0, wx.ALL, 5 )
+
+		self.m_staticText6 = wx.StaticText( self, wx.ID_ANY, u"5", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText6.Wrap( -1 )
+
+		gSizer71.Add( self.m_staticText6, 0, wx.ALL, 5 )
+
+
+		bSizer51.Add( gSizer71, 1, wx.EXPAND, 5 )
+
+
+		gSizer7.Add( bSizer51, 1, wx.EXPAND, 5 )
+
+		bSizer52 = wx.BoxSizer( wx.VERTICAL )
+
+		self.m_staticText1 = wx.StaticText( self, wx.ID_ANY, u"Dados Disponíveis", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText1.Wrap( -1 )
+
+		bSizer52.Add( self.m_staticText1, 0, wx.ALL, 5 )
+
+		m_checkList1Choices = []
+		self.m_checkList1 = wx.CheckListBox( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_checkList1Choices, 0 )
+		bSizer52.Add( self.m_checkList1, 1, wx.ALL|wx.EXPAND, 5 )
+
+
+		gSizer7.Add( bSizer52, 1, wx.EXPAND, 5 )
+
+
+		bSizer48.Add( gSizer7, 1, wx.EXPAND, 5 )
+
+
+		bSizer11.Add( bSizer48, 1, wx.EXPAND, 5 )
+
+
+		gSizer1.Add( bSizer11, 1, wx.EXPAND, 5 )
+
+		bSizer12 = wx.BoxSizer( wx.VERTICAL )
+
+		sbSizer4 = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"Índice 1" ), wx.VERTICAL )
+
+		self.m_button7 = wx.Button( sbSizer4.GetStaticBox(), wx.ID_ANY, u"Preencher", wx.DefaultPosition, wx.DefaultSize, 0 )
+		sbSizer4.Add( self.m_button7, 0, wx.ALL, 5 )
+
+		self.sbSizer6 = wx.StaticBoxSizer( wx.StaticBox( sbSizer4.GetStaticBox(), wx.ID_ANY, u"" ), wx.VERTICAL )
+
+
+		sbSizer4.Add( self.sbSizer6, 1, wx.EXPAND, 5 )
+
+
+		bSizer12.Add( sbSizer4, 1, wx.EXPAND, 5 )
+
+		sbSizer5 = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"Índice 2" ), wx.VERTICAL )
+
+		self.m_button8 = wx.Button( sbSizer5.GetStaticBox(), wx.ID_ANY, u"Preencher", wx.DefaultPosition, wx.DefaultSize, 0 )
+		sbSizer5.Add( self.m_button8, 0, wx.ALL, 5 )
+
+		self.sbSizer7 = wx.StaticBoxSizer( wx.StaticBox( sbSizer5.GetStaticBox(), wx.ID_ANY, u"" ), wx.VERTICAL )
+
+
+		sbSizer5.Add(self.sbSizer7, 1, wx.EXPAND, 5 )
+
+
+		bSizer12.Add( sbSizer5, 1, wx.EXPAND, 5 )
+
+
+		gSizer1.Add( bSizer12, 1, wx.EXPAND, 5 )
+
+
+		self.SetSizer( gSizer1 )
+		self.Layout()
+		self.m_menubar3 = wx.MenuBar( 0 )
+		self.m_menu1 = wx.Menu()
+		self.m_menubar3.Append( self.m_menu1, u"Inicio" )
+
+		self.m_menu2 = wx.Menu()
+		self.m_menubar3.Append( self.m_menu2, u"Sobre" )
+
+		self.SetMenuBar( self.m_menubar3 )
+
+
+		self.Centre( wx.BOTH )
+
+		# Connect Events
+		self.m_button24.Bind( wx.EVT_BUTTON, self.ListBase )
+		self.m_button22.Bind( wx.EVT_BUTTON, self.CleanGraphics )
+		self.m_button27.Bind( wx.EVT_BUTTON, self.TestCorrelation )
+		self.m_slider3.Bind( wx.EVT_SLIDER, self.m_slider3OnSlider )
+		self.m_checkList1.Bind( wx.EVT_CHECKLISTBOX, self.BoxChecked )
+		self.m_button7.Bind( wx.EVT_BUTTON, self.FillingButton1 )
+		self.m_button8.Bind( wx.EVT_BUTTON, self.FillingButton2 )
+
+	def __del__( self ):
+		pass
+	def m_slider3OnSlider( self, event ):
+		self.m_staticText6.Label = str(self.m_slider3.GetValue())
+		event.Skip()
+# Virtual event handlers, override them in your derived class
+	
+	def CleanGraphics( self, event ):
+		self.m_button8.Show()
+		self.m_button7.Show()
+		self.sbSizer7.Clear(True)
+		self.sbSizer6.Clear(True)
+		self.plotData1.clear()
+		self.plotData2.clear()
+		event.Skip()
+
+	def TestCorrelation( self, event ):
+		if len(self.plotData1) !=0 and len(self.plotData2) !=0:
+			CorrelationData=self.returnFormatedData(self.plotData1,self.plotData2)
+			movedCorrelation=self.movingCorrelation(CorrelationData,self.m_slider3.GetValue())
+			plt.plot(movedCorrelation[0],movedCorrelation[1], color='darkmagenta',linewidth=3)
+			plt.xlabel("Anos", size=16)
+			plt.ylabel("Correlação", size=16)
+			plt.suptitle("Correlação "+self.plot1Name+" x "+self.plot2Name)
+			plt.show()
+		event.Skip()
+	
+	def returnFormatedData(self,data1, data2):
+		formatedData = [],[],[]
+	
+		for index1 in range(len(data1[1])):
+			for index2 in (range(len(data2[1])) ):
+				if (data1[1][index1].month == data2[1][index2].month) and  (data1[1][index1].year == data2[1][index2].year):
+					#print(data2[1][index2])
+					formatedData[1].append(data1[0][index1])
+					formatedData[2].append(data2[0][index2])
+					formatedData[0].append(data1[1][index1])
+	
+		return formatedData
+
+
+	def movingCorrelation(self, formatedData,wsize):
+		movSpearmans = [],[]
+		if len(formatedData[1]) < wsize:
+			wsize = len(formatedData[1])
+
+		for index in range(len(formatedData[1])):
+			dados1teste =[]
+			dados2teste =[]
+			if (index+wsize) < len(formatedData[1]) :
+				for index2 in range(wsize):
+					dados1teste.append(formatedData[1][index + index2])
+					dados2teste.append(formatedData[2][index + index2])
+				corr, _ = pearsonr(dados1teste, dados2teste)   
+				movSpearmans[0].append(formatedData[0][index +index2])
+				movSpearmans[1].append(corr)
+		return movSpearmans
+	def FillingButton1( self, event ):
+		if len(self.m_checkList1.GetCheckedItems()) !=1:
+			return
+
+		data = self.loadData(self.m_checkList1.GetString(self.m_checkList1.GetCheckedItems()[0]))
+		self.plot1Name = self.m_checkList1.GetString(self.m_checkList1.GetCheckedItems()[0]).replace(".csv","")
+		self.plotData1 = data
+	
+		x_values2 = data[1]
+		y_values2 = data[0]
+		self.sbSizer6.Clear()
+		self.figure = Figure(figsize=(figuresize))
+		self.plot1 = self.figure.add_subplot(111)
+		self.plot1.plot(x_values2,y_values2, color='mediumblue',linewidth=3)
+		self.canvas = FigureCanvas(self.sbSizer6.GetStaticBox(), -1, self.figure)
+		self.sbSizer6.Add(self.canvas)
+	
+		self.m_button7.Hide()
+		event.Skip()
+
+	def FillingButton2( self, event ):
+		if len(self.m_checkList1.GetCheckedItems()) !=1:
+			return
+		data = self.loadData(self.m_checkList1.GetString(self.m_checkList1.GetCheckedItems()[0]))
+		self.plot2Name=self.m_checkList1.GetString(self.m_checkList1.GetCheckedItems()[0]).replace(".csv","")
+		self.plotData2 = data
+		x_values2 = data[1]
+		y_values2 = data[0]
+		self.sbSizer7.Clear()
+		self.figure = Figure(figsize=(figuresize))
+		self.plot1 = self.figure.add_subplot(111)
+		self.plot1.plot(x_values2,y_values2, color='red',linewidth=3)
+		self.canvas = FigureCanvas(self.sbSizer7.GetStaticBox(), -1, self.figure)
+		self.sbSizer7.Add(self.canvas)
+		self.m_button8.Hide()
+		event.Skip()
+	
+	def BoxChecked( self, event ):
+		if len(self.m_checkList1.GetCheckedItems())> 1:
+			self.m_checkList1.CheckedItems = []
+		event.Skip()
+	# Virtual event handlers, override them in your derived class
+	def ListBase( self, event ):
+	
+		self.m_checkList1.Clear()
+		for elementyahoo in self.yahooDatas():
+			self.m_checkList1.Append(elementyahoo)
+			
+		for elementfred in self.fredDatas():
+			self.m_checkList1.Append(elementfred)
+			
+		event.Skip()
+
+	
+	def fredDatas(self):
+		files=[]
+		names = os.listdir("fred")
+		for name in names:
+			if ".csv" in name:
+				print(name)
+				files.append(name)
+		return files
+	
+	
+	def yahooDatas(self):
+		files=[]
+		names = os.listdir("yahoo")
+		for name in names:
+			if ".csv" in name:
+				print(name)
+				files.append(name)
+		return files
+	
+	def createPlot1(self):
+		#plot 1
+		self.figure = Figure(figsize=(9.5,3.9))
+		self.plot1 = self.figure.add_subplot(111)
+		self.canvas = FigureCanvas(self.sbSizer6.GetStaticBox(), -1, self.figure)
+		self.sbSizer6.Add(self.canvas)
+		
+
+	def createPlot2(self):
+		#plot 1
+		self.figure = Figure(figsize=(9.5,3.9))
+		print(self.sbSizer7.GetStaticBox())
+		print(wx.HORIZONTAL)
+		print(self.sbSizer7.CalcMin().GetWidth(), self.sbSizer7.CalcMin().GetHeight())
+		self.plot2 = self.figure.add_subplot(111)
+		self.canvas = FigureCanvas(self.sbSizer7.GetStaticBox(), -1, self.figure)
+		self.sbSizer7.Add(self.canvas)
+
+	def loadData(self,file):
+		data =''
+		for elementyahoo in self.yahooDatas():
+			if file == elementyahoo :
+				filelocation = "yahoo/"+file
+				data = self.readCSVYahooFormat(filelocation)
+		for elementfred in self.fredDatas():
+			if file == elementfred :
+				filelocation = "fred/"+file
+				data = self.readCSVFredFormat(filelocation)
+		monthly = pd.DataFrame({"VALUE": data[0],"DATE":pd.to_datetime(data[1])})
+		average = monthly.resample("M",on="DATE").mean()
+		
+		processdata = average['VALUE'].values.tolist()
+		count = 0
+		dates =[]
+		while count < average.size:
+			date_str = str(average.index[count]).split(' ', 1)
+			dates.append(dt.strptime(date_str[0], "%Y-%m-%d").date())
+			count +=1
+		data.clear()
+		data = [processdata,dates]
+		return data
+	
+	def ColumNames(self,file):
+
+	# opening the csv file
+		with open(file) as csv_file:
+	
+			# reading the csv file using DictReader
+			csv_reader = csv.DictReader(csv_file)
+			dict_from_csv = dict(list(csv_reader)[0])
+		
+			# making a list from the keys of the dict
+			list_of_column_names = list(dict_from_csv.keys())
+		return list_of_column_names	
+	
+	def readCSVFredFormat(self,file):
+		dates=[]
+		value=[]
+		listofcolumnnames=self.ColumNames(file)
+		with open(file, newline='') as csvfile:
+			reader = csv.DictReader(csvfile)
+			for row in reader:
+				dates.append(row[listofcolumnnames[0]])
+				value.append(float(row[listofcolumnnames[1]]))
+		dates = [dt.strptime(d, "%Y-%m-%d").date() for d in dates]
+		data=[value,dates]
+		return(data)
+	
+	def readCSVYahooFormat(self,file):
+		dates=[]
+		value=[]
+		listofcolumnnames=self.ColumNames(file)
+		with open(file, newline='') as csvfile:
+			reader = csv.DictReader(csvfile)
+			for row in reader:
+		#        print(row['DATE'], row['PCU33443344'])
+				dates.append(row[listofcolumnnames[0]])
+				value.append(float(row[listofcolumnnames[5]]))
+		dates = [dt.strptime(d, "%Y-%m-%d").date() for d in dates]
+		data=[value,dates]
+		return(data)
+
+
+
+if __name__ == '__main__':
+
+    app = wx.App(False)
+    #create an object of CalcFrame
+    frame = Inicial(None)
+    #frame.createPlot1()
+    #frame.createPlot2()
+    #show the frame
+    frame.Show(True)
+    #app = MyApp(False)
+    app.MainLoop()
